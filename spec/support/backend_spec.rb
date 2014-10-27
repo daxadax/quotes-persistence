@@ -6,10 +6,6 @@ class BackendSpec < Minitest::Spec
     run_migrations
   end
 
-  after do
-    File.delete('./quotes-test.db')
-  end
-
   def run_migrations
     Sequel.extension :migration
 
