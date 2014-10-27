@@ -8,7 +8,7 @@ class QuotesGatewayBackendSpec < BackendSpec
     build_serialized_quote(:tags => ['a', 'b', 'c'])
   end
   let(:persisted_quote_with_tags) do
-    build_serialized_quote(:id => 1, :tags => ['a', 'b', 'c'])
+    build_serialized_quote(:uid => 1, :tags => ['a', 'b', 'c'])
   end
 
   describe "insert" do
@@ -17,7 +17,7 @@ class QuotesGatewayBackendSpec < BackendSpec
     end
 
     describe "with an already added quote" do
-      let(:quote) { build_serialized_quote(:id => "already_here!") }
+      let(:quote) { build_serialized_quote(:uid => "already_here!") }
 
       it "fails" do
         assert_failure { backend.insert(quote) }
@@ -91,19 +91,7 @@ class QuotesGatewayBackendSpec < BackendSpec
       backend.delete(1)
 
       assert_nil    backend.get(1)
-      assert_equal  backend.get(2), quote_with_tags.merge({:id => 2})
-    end
-  end
-
-  describe "toggle_star" do
-    it "adds or removes starred status" do
-      id = backend.insert(quote)
-
-      backend.toggle_star(id)
-      assert_equal true, backend.get(id)[:starred]
-
-      backend.toggle_star(id)
-      assert_equal false, backend.get(id)[:starred]
+      assert_equal  backend.get(2), quote_with_tags.merge({:uid => 2})
     end
   end
 

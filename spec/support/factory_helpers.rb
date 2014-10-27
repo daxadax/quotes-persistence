@@ -12,13 +12,24 @@ module Support
         :author       => author,
         :title        => title,
         :content      => content,
-        :id           => options[:id]           || nil,
+        :uid          => options[:uid]         || nil,
         :publisher    => options[:publisher]    || nil,
         :year         => options[:year]         || nil,
         :page_number  => options[:page_number]  || nil,
-        :starred      => options[:starred]      || false,
         :tags         => build_tags(options),
         :links        => build_links(options)
+      }
+    end
+
+    def build_serialized_user(options = {})
+      {
+        :uid        => options[:uid],
+        :nickname   => options[:nickname]   ||'nickname',
+        :email      => options[:email]      ||'email',
+        :auth_key   => options[:auth_key]   ||'auth_key',
+        :favorites  => options[:favorities] || [],
+        :added      => options[:added]      || [],
+        :terms_accepted => true
       }
     end
 
