@@ -10,6 +10,31 @@ module Persistence
         @database = retrieve_database
       end
 
+      def ensure_valid!(obj)
+        ensure_hash!(obj)
+        ensure_not_persisted!(obj)
+      end
+
+      def ensure_not_persisted!(obj)
+        reason = "Objects can't be added twice. Use #update instead"
+
+        raise_argument_error(reason, obj) unless obj[:uid].nil?
+      end
+
+      def ensure_persisted!(obj)
+        reason = "Objects must exist to update them. Use #insert instead"
+
+        raise_argument_error(reason, obj) if obj[:uid].nil?
+      end
+
+      def ensure_hash!(obj)
+        reason = "Only Hashes can be inserted"
+
+        unless obj.kind_of? Hash
+          raise_argument_error(reason, obj)
+        end
+      end
+
       private
 
       def retrieve_database
