@@ -27,13 +27,27 @@ module Support
         :nickname   => options[:nickname]   ||'nickname',
         :email      => options[:email]      ||'email',
         :auth_key   => options[:auth_key]   ||'auth_key',
-        :favorites  => options[:favorities] || [],
-        :added      => options[:added]      || [],
-        :terms_accepted => true
+        :favorites  => build_favorites(options),
+        :added      => build_added(options),
+        :terms => false
       }
     end
 
     private
+
+    def build_favorites(options)
+      favorites = options[:favorities] || [23, 999]
+
+      return dump(favorites) unless options[:no_json]
+      favorites
+    end
+
+    def build_added(options)
+      added = options[:added] || []
+
+      return dump(added) unless options[:no_json]
+      added
+    end
 
     def build_tags(options)
       tags = options[:tags] || []
