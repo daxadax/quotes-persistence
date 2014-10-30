@@ -13,6 +13,20 @@ module Persistence
         @table.insert(user)
       end
 
+      def update(user)
+        ensure_persisted!(user)
+
+        @table.where(:uid => user[:uid]).update(user)
+      end
+
+      def get(uid)
+        @table.first(:uid => uid)
+      end
+
+      def all
+        @table.all
+      end
+
       def fetch(nickname)
 
       end
