@@ -28,7 +28,7 @@ module Persistence
       end
 
       def fetch(nickname)
-
+        @table.first(:nickname => nickname)
       end
 
     end

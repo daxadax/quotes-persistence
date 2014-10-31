@@ -32,10 +32,23 @@ class UsersGatewayBackendSpec < BackendSpec
     end
 
     it "stores the serialized data in database" do
-      backend.insert(user)
-      result = backend.get(1)
+      user_uid = backend.insert user
+      result = backend.get user_uid
 
-      assert_storage(result)
+      assert_storage result
+    end
+  end
+
+  describe 'fetch' do
+    it 'returns nil if the user is not found' do
+      assert_nil backend.fetch('not a real nickname')
+    end
+
+    it 'finds the user by nickname' do
+      backend.insert user
+      result = backend.fetch user[:nickname]
+
+      assert_storage result
     end
   end
 
