@@ -4,31 +4,33 @@ module Support
   module FactoryHelpers
 
     def build_serialized_quote(options = {})
+      added_by = options[:added_by] || 23
       author  = options[:author]  || 'Author'
       title   = options[:title]   || 'Title'
       content = options[:content] || 'Content'
 
       {
-        :author       => author,
-        :title        => title,
-        :content      => content,
-        :uid          => options[:uid]         || nil,
-        :publisher    => options[:publisher]    || nil,
-        :year         => options[:year]         || nil,
-        :page_number  => options[:page_number]  || nil,
-        :tags         => build_tags(options),
-        :links        => build_links(options)
+        :added_by => added_by,
+        :author => author,
+        :title => title,
+        :content => content,
+        :uid => options[:uid]         || nil,
+        :publisher => options[:publisher]    || nil,
+        :year => options[:year]         || nil,
+        :page_number => options[:page_number]  || nil,
+        :tags => build_tags(options),
+        :links => build_links(options)
       }
     end
 
     def build_serialized_user(options = {})
       {
-        :uid        => options[:uid],
-        :nickname   => options[:nickname]   ||'nickname',
-        :email      => options[:email]      ||'email',
-        :auth_key   => options[:auth_key]   ||'auth_key',
-        :favorites  => build_favorites(options),
-        :added      => build_added(options),
+        :uid => options[:uid],
+        :nickname => options[:nickname] ||'nickname',
+        :email => options[:email] ||'email',
+        :auth_key => options[:auth_key] ||'auth_key',
+        :favorites => build_favorites(options),
+        :added => build_added(options),
         :terms => false
       }
     end

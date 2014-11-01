@@ -71,8 +71,8 @@ class QuotesGatewayBackendSpec < BackendSpec
       backend.insert(quote_with_tags)
       result = backend.all
 
-      assert_equal 2,                       result.size
-      assert_equal quote[:tags],            result[0][:tags]
+      assert_equal 2, result.size
+      assert_equal quote[:tags], result[0][:tags]
       assert_equal quote_with_tags[:tags],  result[1][:tags]
     end
   end
@@ -96,15 +96,16 @@ class QuotesGatewayBackendSpec < BackendSpec
   end
 
   def assert_storage(actual)
-    assert_equal quote_with_tags[:author],      actual[:author]
-    assert_equal quote_with_tags[:title],       actual[:title]
-    assert_equal quote_with_tags[:content],     actual[:content]
-    assert_equal quote_with_tags[:publisher],   actual[:publisher]
-    assert_equal quote_with_tags[:year],        actual[:year]
+    assert_equal quote_with_tags[:added_by], actual[:added_by]
+    assert_equal quote_with_tags[:author], actual[:author]
+    assert_equal quote_with_tags[:title], actual[:title]
+    assert_equal quote_with_tags[:content], actual[:content]
+    assert_equal quote_with_tags[:publisher], actual[:publisher]
+    assert_equal quote_with_tags[:year], actual[:year]
     assert_equal quote_with_tags[:page_number], actual[:page_number]
-    assert_equal quote_with_tags[:starred],     actual[:starred]
-    assert_equal quote_with_tags[:tags],        actual[:tags]
-    assert_equal quote_with_tags[:links],       actual[:links]
+    assert_equal quote_with_tags[:starred], actual[:starred]
+    assert_equal quote_with_tags[:tags], actual[:tags]
+    assert_equal quote_with_tags[:links], actual[:links]
   end
 
 end
