@@ -85,6 +85,24 @@ class UsersGatewayBackendSpec < BackendSpec
     end
   end
 
+  describe "delete" do
+    it "removes the user associated with the given id" do
+      backend.insert(user)
+      backend.delete(1)
+
+      assert_nil backend.get(1)
+    end
+
+    it "doesn't remove other quotes" do
+      backend.insert(user)
+      backend.insert(user)
+      backend.delete(1)
+
+      assert_nil backend.get(1)
+      assert_storage backend.get(2)
+    end
+  end
+
   private
 
   def assert_storage(actual)

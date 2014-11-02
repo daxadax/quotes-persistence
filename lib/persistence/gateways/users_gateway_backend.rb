@@ -31,6 +31,10 @@ module Persistence
         @table.first(:nickname => nickname)
       end
 
+      def delete(uid)
+        @table.where(:uid => uid).delete
+      end
+
     end
   end
 end
