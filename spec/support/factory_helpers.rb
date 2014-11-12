@@ -5,21 +5,27 @@ module Support
 
     def build_serialized_quote(options = {})
       added_by = options[:added_by] || 23
-      author  = options[:author]  || 'Author'
-      title   = options[:title]   || 'Title'
       content = options[:content] || 'Content'
+      publication_uid = options[:publication_uid] || 99
 
       {
+        :uid => options[:uid] || nil,
         :added_by => added_by,
-        :author => author,
-        :title => title,
         :content => content,
-        :uid => options[:uid]         || nil,
-        :publisher => options[:publisher]    || nil,
-        :year => options[:year]         || nil,
+        :publication_uid => publication_uid,
         :page_number => options[:page_number]  || nil,
         :tags => build_tags(options),
         :links => build_links(options)
+      }
+    end
+
+    def build_serialized_publication(uid, options = {})
+      {
+        :uid => uid,
+        :author => options[:author] || "Author",
+        :title => options[:title] || "Title",
+        :publisher => options[:publisher] || "Publisher",
+        :year => options[:year] || 1999
       }
     end
 
