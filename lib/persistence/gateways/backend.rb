@@ -10,6 +10,32 @@ module Persistence
         @database = retrieve_database
       end
 
+      def insert(object)
+        ensure_valid!(object)
+
+        table.insert(object)
+      end
+
+      def get(uid)
+        table.first(:uid => uid)
+      end
+
+      def update(object)
+        ensure_persisted!(object)
+
+        table.where(:uid => object[:uid]).update(object)
+      end
+
+      def all
+        table.all
+      end
+
+      def delete(uid)
+        table.where(:uid => uid).delete
+      end
+
+      private
+
       def ensure_valid!(obj)
         ensure_hash!(obj)
         ensure_not_persisted!(obj)
@@ -34,8 +60,6 @@ module Persistence
           raise_argument_error(reason, obj)
         end
       end
-
-      private
 
       def retrieve_database
         raise no_database_provided unless ENV['DATABASE_URL']

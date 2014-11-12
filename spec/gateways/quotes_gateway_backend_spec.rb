@@ -97,11 +97,8 @@ class QuotesGatewayBackendSpec < BackendSpec
 
   def assert_storage(actual)
     assert_equal quote_with_tags[:added_by], actual[:added_by]
-    assert_equal quote_with_tags[:author], actual[:author]
-    assert_equal quote_with_tags[:title], actual[:title]
     assert_equal quote_with_tags[:content], actual[:content]
-    assert_equal quote_with_tags[:publisher], actual[:publisher]
-    assert_equal quote_with_tags[:year], actual[:year]
+    assert_equal quote_with_tags[:publication_uid], actual[:publication_uid]
     assert_equal quote_with_tags[:page_number], actual[:page_number]
     assert_equal quote_with_tags[:starred], actual[:starred]
     assert_equal quote_with_tags[:tags], actual[:tags]

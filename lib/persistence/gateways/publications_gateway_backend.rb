@@ -1,14 +1,10 @@
 module Persistence
   module Gateways
-    class UsersGatewayBackend < Backend
+    class PublicationsGatewayBackend < Backend
 
       def initialize
         super
-        @table = @database[:users]
-      end
-
-      def fetch(nickname)
-        table.first(:nickname => nickname)
+        @table = @database[:publications]
       end
 
       private

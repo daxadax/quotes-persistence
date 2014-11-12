@@ -7,28 +7,10 @@ module Persistence
         @table = @database[:quotes]
       end
 
-      def insert(quote)
-        ensure_valid!(quote)
+      private
 
-        @table.insert(quote)
-      end
-
-      def get(uid)
-        @table.first(:uid => uid)
-      end
-
-      def update(quote)
-        ensure_persisted!(quote)
-
-        @table.where(:uid => quote[:uid]).update(quote)
-      end
-
-      def all
-        @table.all
-      end
-
-      def delete(uid)
-        @table.where(:uid => uid).delete
+      def table
+        @table
       end
 
     end
