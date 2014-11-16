@@ -18,13 +18,13 @@ namespace :db do
       raise 'Please provide a database as `ENV[DATABASE_URL]`'
     end
 
-    version         = ENV['VERSION']
-    database_url    = ENV['DATABASE_URL']
-    db              = Sequel.connect(database_url)
+    version = ENV['VERSION']
+    database_url = ENV['DATABASE_URL']
+    db = Sequel.connect(database_url)
 
     if version
       puts "Migrating to version #{version}"
-      Sequel::Migrator.run(db, "./migrations", version.to_i)
+      Sequel::Migrator.run(db, "./migrations", :target => version.to_i)
     else
       puts "Migrating"
       Sequel::Migrator.run(db, "./migrations")
