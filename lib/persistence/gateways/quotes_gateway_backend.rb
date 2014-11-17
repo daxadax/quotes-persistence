@@ -7,6 +7,14 @@ module Persistence
         @table = @database[:quotes]
       end
 
+      def get(uid)
+        table.join(:publications, :publication_uid => :publication_uid).first(:uid => uid)
+      end
+
+      def all
+        table.join(:publications, :publication_uid => :publication_uid).all
+      end
+
       private
 
       def table

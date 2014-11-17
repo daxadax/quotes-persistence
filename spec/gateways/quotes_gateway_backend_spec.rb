@@ -2,13 +2,25 @@ require 'spec_helper'
 
 class QuotesGatewayBackendSpec < BackendSpec
 
+  let(:publications_backend) { Gateways::PublicationsGatewayBackend.new }
   let(:backend) { Gateways::QuotesGatewayBackend.new }
-  let(:quote)   { build_serialized_quote }
+  let(:publication) { build_serialized_publication(nil) }
+  let(:publication_uid) { publications_backend.insert(publication) }
+  let(:other_publication) { build_serialized_publication(nil, :author => "Other") }
+  let(:other_publication_uid) { publications_backend.insert(other_publication) }
+  let(:quote)   { build_serialized_quote(:publication_uid => publication_uid) }
   let(:quote_with_tags) do
-    build_serialized_quote(:tags => ['a', 'b', 'c'])
+    build_serialized_quote(
+      :publication_uid => other_publication_uid,
+      :tags => ['a', 'b', 'c']
+    )
   end
   let(:persisted_quote_with_tags) do
-    build_serialized_quote(:uid => 1, :tags => ['a', 'b', 'c'])
+    build_serialized_quote(
+      :uid => 1,
+      :publication_uid => other_publication_uid,
+      :tags => ['a', 'b', 'c','d']
+    )
   end
 
   describe "insert" do
@@ -37,10 +49,10 @@ class QuotesGatewayBackendSpec < BackendSpec
     end
 
     it "stores the serialized data in database" do
-      backend.insert(quote_with_tags)
-      result = backend.get(1)
+      uid = backend.insert(quote_with_tags)
+      result = backend.get(uid)
 
-      assert_storage(result)
+      assert_stored(result)
     end
   end
 
@@ -52,12 +64,12 @@ class QuotesGatewayBackendSpec < BackendSpec
     end
 
     it "updates any changed attributes" do
-      backend.insert(quote)
+      uid = backend.insert(quote_with_tags)
       backend.update(persisted_quote_with_tags)
-      result = backend.get(1)
+      result = backend.get(uid)
 
-      refute_equal quote, result
-      assert_storage(result)
+      refute_equal quote_with_tags, result
+      assert_equal persisted_quote_with_tags[:tags], result[:tags]
     end
   end
 
@@ -73,29 +85,31 @@ class QuotesGatewayBackendSpec < BackendSpec
 
       assert_equal 2, result.size
       assert_equal quote[:tags], result[0][:tags]
+      assert_equal publication[:author], result[0][:author]
       assert_equal quote_with_tags[:tags],  result[1][:tags]
+      assert_equal other_publication[:author], result[1][:author]
     end
   end
 
   describe "delete" do
     it "removes the quote associated with the given id" do
-      backend.insert(quote)
-      backend.delete(1)
+      uid = backend.insert(quote)
+      backend.delete(uid)
 
-      assert_nil backend.get(1)
+      assert_nil backend.get(uid)
     end
 
     it "doesn't remove other quotes" do
-      backend.insert(quote)
-      backend.insert(quote_with_tags)
-      backend.delete(1)
+      uid = backend.insert(quote)
+      second_uid = backend.insert(quote_with_tags)
+      backend.delete(uid)
 
-      assert_nil    backend.get(1)
-      assert_equal  backend.get(2), quote_with_tags.merge({:uid => 2})
+      assert_nil backend.get(uid)
+      assert_stored  backend.get(second_uid)
     end
   end
 
-  def assert_storage(actual)
+  def assert_stored(actual)
     assert_equal quote_with_tags[:added_by], actual[:added_by]
     assert_equal quote_with_tags[:content], actual[:content]
     assert_equal quote_with_tags[:publication_uid], actual[:publication_uid]
@@ -103,6 +117,10 @@ class QuotesGatewayBackendSpec < BackendSpec
     assert_equal quote_with_tags[:starred], actual[:starred]
     assert_equal quote_with_tags[:tags], actual[:tags]
     assert_equal quote_with_tags[:links], actual[:links]
+    assert_equal other_publication[:author], actual[:author]
+    assert_equal other_publication[:title], actual[:title]
+    assert_equal other_publication[:publisher], actual[:publisher]
+    assert_equal other_publication[:year], actual[:year]
   end
 
 end

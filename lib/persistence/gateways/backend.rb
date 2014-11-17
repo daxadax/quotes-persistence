@@ -17,13 +17,13 @@ module Persistence
       end
 
       def get(uid)
-        table.first(:uid => uid)
+        table.first(object_identifier => uid)
       end
 
       def update(object)
         ensure_persisted!(object)
 
-        table.where(:uid => object[:uid]).update(object)
+        table.where(object_identifier => object[object_identifier]).update(object)
       end
 
       def all
@@ -31,10 +31,14 @@ module Persistence
       end
 
       def delete(uid)
-        table.where(:uid => uid).delete
+        table.where(object_identifier => uid).delete
       end
 
       private
+
+      def object_identifier
+        :uid
+      end
 
       def ensure_valid!(obj)
         ensure_hash!(obj)
@@ -44,13 +48,13 @@ module Persistence
       def ensure_not_persisted!(obj)
         reason = "Objects can't be added twice. Use #update instead"
 
-        raise_argument_error(reason, obj) unless obj[:uid].nil?
+        raise_argument_error(reason, obj) unless obj[object_identifier].nil?
       end
 
       def ensure_persisted!(obj)
         reason = "Objects must exist to update them. Use #insert instead"
 
-        raise_argument_error(reason, obj) if obj[:uid].nil?
+        raise_argument_error(reason, obj) if obj[object_identifier].nil?
       end
 
       def ensure_hash!(obj)

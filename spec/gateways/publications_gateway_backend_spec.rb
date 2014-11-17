@@ -12,7 +12,9 @@ class PublicationsGatewayBackendSpec < BackendSpec
     end
 
     describe "with an already added publication" do
-      let(:publication) { build_serialized_publication(:uid => "already_here!") }
+      let(:publication) do
+        build_serialized_publication(:publication_uid => "already_here!")
+      end
 
       it "fails" do
         assert_failure { backend.insert(publication) }
@@ -35,7 +37,7 @@ class PublicationsGatewayBackendSpec < BackendSpec
       uid = backend.insert(publication_two)
       result = backend.get(uid)
 
-      assert_equal uid, result[:uid]
+      assert_equal uid, result[:publication_uid]
       assert_equal publication_two[:author], result[:author]
       assert_equal publication_two[:title], result[:title]
       assert_equal publication_two[:publisher], result[:publisher]
@@ -53,10 +55,10 @@ class PublicationsGatewayBackendSpec < BackendSpec
     it "updates any changed attributes" do
       uid = backend.insert(publication)
       backend.update(build_serialized_publication(uid, :title => "New Title"))
-      result = backend.get(1)
+      result = backend.get(uid)
 
       refute_equal publication, result
-      assert_equal uid, result[:uid]
+      assert_equal uid, result[:publication_uid]
       assert_equal "New Title", result[:title]
     end
   end
@@ -91,7 +93,7 @@ class PublicationsGatewayBackendSpec < BackendSpec
       backend.delete(1)
 
       assert_nil  backend.get(1)
-      assert_equal  backend.get(2), publication_two.merge({:uid => 2})
+      assert_equal  backend.get(2), publication_two.merge({:publication_uid => 2})
     end
   end
 

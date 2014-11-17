@@ -9,6 +9,10 @@ module Persistence
 
       private
 
+      def object_identifier
+        :publication_uid
+      end
+
       def table
         @table
       end
