@@ -2,9 +2,9 @@ require 'spec_helper'
 
 class UsersGatewayBackendSpec < BackendSpec
 
-  let(:user)                    { build_serialized_user }
-  let(:user_to_update)  { build_serialized_user(:uid => 1, :nickname => 'new') }
-  let(:backend)             { Gateways::UsersGatewayBackend.new }
+  let(:user) { build_serialized_user }
+  let(:user_to_update) { build_serialized_user(:uid => 1, :nickname => 'new') }
+  let(:backend) { Gateways::UsersGatewayBackend.new }
 
   describe "insert" do
     it "ensures the added object is a Hash" do
@@ -65,6 +65,9 @@ class UsersGatewayBackendSpec < BackendSpec
       assert_equal 2, result.size
       assert_equal user[:favorites], result[0][:favorites]
       assert_equal user[:added], result[0][:added]
+      assert_equal user[:last_login_time], result[0][:last_login_time]
+      assert_equal user[:last_login_address], result[0][:last_login_address]
+      assert_equal user[:login_count], result[0][:login_count]
     end
   end
 
@@ -106,12 +109,15 @@ class UsersGatewayBackendSpec < BackendSpec
   private
 
   def assert_storage(actual)
-    assert_equal user[:nickname],  actual[:nickname]
-    assert_equal user[:email],          actual[:email]
-    assert_equal user[:auth_key],   actual[:auth_key]
-    assert_equal user[:favorites],    actual[:favorites]
-    assert_equal user[:added],        actual[:added]
+    assert_equal user[:nickname], actual[:nickname]
+    assert_equal user[:email], actual[:email]
+    assert_equal user[:auth_key], actual[:auth_key]
+    assert_equal user[:favorites], actual[:favorites]
+    assert_equal user[:added], actual[:added]
     assert_equal_terms(actual)
+    assert_equal user[:last_login_time], actual[:last_login_time]
+    assert_equal user[:last_login_address], actual[:last_login_address]
+    assert_equal user[:login_count], actual[:login_count]
   end
 
   def assert_equal_terms(actual)
