@@ -21,7 +21,8 @@ module Support
 
     def build_serialized_publication(uid, options = {})
       {
-        :publication_uid => uid || options[:publication_uid],
+        :publication_uid => uid,
+        :publication_added_by => options[:added_by] || 23,
         :author => options[:author] || "Author",
         :title => options[:title] || "Title",
         :publisher => options[:publisher] || "Publisher",

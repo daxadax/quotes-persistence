@@ -38,6 +38,7 @@ class PublicationsGatewayBackendSpec < BackendSpec
       result = backend.get(uid)
 
       assert_equal uid, result[:publication_uid]
+      assert_equal publication_two[:publication_added_by], result[:publication_added_by]
       assert_equal publication_two[:author], result[:author]
       assert_equal publication_two[:title], result[:title]
       assert_equal publication_two[:publisher], result[:publisher]
