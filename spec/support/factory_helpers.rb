@@ -36,7 +36,8 @@ module Support
         :email => options[:email] ||'email',
         :auth_key => options[:auth_key] ||'auth_key',
         :favorites => build_favorites(options),
-        :added => build_added(options),
+        :added_quotes => build_added_quotes(options),
+        :added_publications => build_added_publications(options),
         :terms => false
       }
     end
@@ -50,8 +51,15 @@ module Support
       favorites
     end
 
-    def build_added(options)
-      added = options[:added] || []
+    def build_added_publications(options)
+        added = options[:added_publications] || []
+
+        return dump(added) unless options[:no_json]
+        added
+    end
+
+    def build_added_quotes(options)
+      added = options[:added_quotes] || []
 
       return dump(added) unless options[:no_json]
       added
