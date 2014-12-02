@@ -64,7 +64,8 @@ class UsersGatewayBackendSpec < BackendSpec
 
       assert_equal 2, result.size
       assert_equal user[:favorites], result[0][:favorites]
-      assert_equal user[:added], result[0][:added]
+      assert_equal user[:added_quotes], result[0][:added_quotes]
+      assert_equal user[:added_publications], result[0][:added_publications]
       assert_equal user[:last_login_time], result[0][:last_login_time]
       assert_equal user[:last_login_address], result[0][:last_login_address]
       assert_equal user[:login_count], result[0][:login_count]
@@ -113,7 +114,8 @@ class UsersGatewayBackendSpec < BackendSpec
     assert_equal user[:email], actual[:email]
     assert_equal user[:auth_key], actual[:auth_key]
     assert_equal user[:favorites], actual[:favorites]
-    assert_equal user[:added], actual[:added]
+    assert_equal user[:added_quotes], actual[:added_quotes]
+    assert_equal user[:added_publications], actual[:added_publications]
     assert_equal_terms(actual)
     assert_equal user[:last_login_time], actual[:last_login_time]
     assert_equal user[:last_login_address], actual[:last_login_address]
