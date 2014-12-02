@@ -20,8 +20,8 @@ class Minitest::Spec
   end
 
   def clean_database
-    existing_tables       = database.tables
-    tables_to_preserve    = [:schema_info, :schema_migrations]
+    existing_tables = database.tables
+    tables_to_preserve = [:schema_info, :schema_migrations]
     tables_to_be_emptied  = existing_tables - tables_to_preserve
 
     tables_to_be_emptied.each { |table| database << "TRUNCATE #{table}" }
