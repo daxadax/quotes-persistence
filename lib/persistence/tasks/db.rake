@@ -9,7 +9,7 @@ namespace :db do
     user = ENV['DB_USER'] || 'root'
     pass = ENV['DB_PASS']
 
-    `mysql -u#{user} -p#{pass} -e "create database quotes-#{env}"`
+    `mysql -u#{user} -p#{pass} -e "create database quotes_#{env}"`
   end
 
   desc "Run migrations (optionally include version number)"
