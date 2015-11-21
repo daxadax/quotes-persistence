@@ -21,5 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'mysql2'
 
   spec.add_development_dependency "bundler"
+  spec.add_development_dependency "minitest-spec"
   spec.add_development_dependency "rake"
 end
