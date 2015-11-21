@@ -17,20 +17,21 @@ namespace :db do
     require "sequel"
     Sequel.extension :migration
 
-    unless ENV.member?('DATABASE_URL')
-      raise 'Please provide a database as `ENV[DATABASE_URL]`'
+    unless ENV.member?('DB_URL')
+      raise 'Please provide a database as `ENV[DB_URL]`'
     end
 
     version = ENV['VERSION']
-    database_url = ENV['DATABASE_URL']
+    database_url = ENV['DB_URL']
+    migration_dir = File.expand_path('../../../../migrations', __FILE__)
     db = Sequel.connect(database_url)
 
     if version
       puts "Migrating to version #{version}"
-      Sequel::Migrator.run(db, "./migrations", :target => version.to_i)
+      Sequel::Migrator.run(db, migration_dir, :target => version.to_i)
     else
       puts "Migrating"
-      Sequel::Migrator.run(db, "./migrations")
+      Sequel::Migrator.run(db, migration_dir)
     end
 
     puts 'Migration complete'
